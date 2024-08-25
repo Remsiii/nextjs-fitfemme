@@ -16,6 +16,7 @@ import BookSessionN from "./BookSessionN";
 import { QuestionCards } from "./question-cards";
 import { Header } from "./Header";
 import Bottom from "./Bottom";
+import LandingPage from "./LandingPage";
 
 export function Component() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -25,7 +26,10 @@ export function Component() {
 
 
   return (
+    <>
+          <LandingPage />
     <div className="flex flex-col min-h-[100dvh]">
+
       <Header />
       <main className="flex-1">
         <section className="w-full pt-12 md:pt-24 lg:pt-32">
@@ -131,6 +135,7 @@ export function Component() {
         <Bottom />
       </main>
     </div>
+    </>
   )
 }
 
