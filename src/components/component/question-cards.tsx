@@ -158,7 +158,7 @@ export function QuestionCards() {
         </CardContent>
         <CardFooter className="flex justify-between">
           {currentStep > 0 && (
-            <Button variant="primary" onClick={handlePrevious} style={{ backgroundColor: '#548687', color: '#ffffff' }}>
+            <Button variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#548687', color: '#ffffff' }}>
               Previous
             </Button>
           )}
