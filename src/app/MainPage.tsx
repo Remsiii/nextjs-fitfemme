@@ -7,7 +7,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Carousel } from "@/components/ui/carousel"
 import '../components/component/styles.css';
-import { JSX, SVGProps, useState } from "react"
+import { JSX, SVGProps, useEffect, useRef, useState } from "react"
 import { ProgramBenefits } from "../components/component/ProgramBenefits"
 import { Plan } from "../components/component/Plan"
 import { Expertise } from "../components/component/Expertise";
@@ -18,6 +18,7 @@ import Bottom from "../components/component/Footers/Bottom";
 import LandingPage from "../components/component/LandingPage";
 import TransformationSection from "../components/component/TransformationSection";
 import OnlineCoaching from "@/components/component/OnlineCoaching";
+import { IntermediateSection } from "@/components/component/Footers/IntermediateSection";
 
 export function Component() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -25,24 +26,14 @@ export function Component() {
   const openPopup = () => setIsPopupOpen(true);
   const closePopup = () => setIsPopupOpen(false);
 
-
   return (
     <>
-          <LandingPage />
-          <section className="w-full py-12 md:py-24 lg:py-20 bg-muted px-24">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Live fit. Eat healthy. Be happy.</h2>
-              {/* <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Fill out the form below to book your first session with FitFemme.
-              </p> */}
-            </div>
-          </div>
-        </section>
-          
-    <div className="flex flex-col min-h-[100dvh]">
-      <main className="flex-1">
-       {/*  <section className="w-full pt-12 md:pt-24 lg:pt-32">
+      <LandingPage />
+    <IntermediateSection />
+
+      <div className="flex flex-col min-h-[100dvh]">
+        <main className="flex-1">
+          {/*  <section className="w-full pt-12 md:pt-24 lg:pt-32">
           <div className="container grid gap-6 px-4 md:px-6 lg:gap-12 w-full">
             <div className="video-container">
             <video
@@ -54,7 +45,7 @@ export function Component() {
               <source src="https://agrukf.webwave.dev/lib/agrukf/copy_DB8D6D2A-2D29-4680-B255-684DEC9C9BCB-1-lubaabhb.mp4" type="video/mp4" />
             </video>
           </div> */}
-            {/* <div className="flex flex-col space-y-4">
+          {/* <div className="flex flex-col space-y-4">
               <div className="">
                 <h1 className="text-3xl font-bold tracking-tighter text-center sm:text-5xl xl:text-6xl">
                   Unleash Your Fitness Potential with FitFemme
@@ -69,18 +60,19 @@ export function Component() {
             </div>
           </div> 
         </section>*/}
-       
-        
 
-        {/* <ProgramBenefits /> */}
-        <OnlineCoaching  />
-        <Plan />
-        <TransformationSection />
 
-  
-        <Bottom />
-      </main>
-    </div>
+
+          {/* <ProgramBenefits /> */}
+          <OnlineCoaching />
+          {/* <Plan /> */}
+          <IntermediateSection />
+          <TransformationSection />
+
+
+          <Bottom />
+        </main>
+      </div>
     </>
   )
 }

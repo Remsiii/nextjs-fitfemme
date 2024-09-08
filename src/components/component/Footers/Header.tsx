@@ -3,14 +3,25 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import Image from 'next/image' // Import the Image component from 'next/image'
+import Image from 'next/image'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleScroll = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
+    event.preventDefault()
+    const targetElement = document.querySelector(targetId)
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+    setIsMenuOpen(false) // Close mobile menu on click
   }
 
   return (
@@ -21,16 +32,14 @@ export function Header() {
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
               <Image src="/icon.png" alt="FitCoach Logo" width={60} height={40} className="mr-2" />
-              {/* <span className="text-xl font-bold text-gray-800">FitCoach</span> */}
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-4">
-            <NavLink href="#about">About</NavLink>
-            <NavLink href="#services">Services</NavLink>
-            <NavLink href="#pricing">Pricing</NavLink>
-            <NavLink href="#contact">Contact</NavLink>
+            <NavLink href="#about" onClick={handleScroll}>About</NavLink>
+            <NavLink href="#services" onClick={handleScroll}>Services</NavLink>
+            <NavLink href="#contact" onClick={handleScroll}>Contact</NavLink>
           </nav>
 
           {/* Burger Menu Icon (Mobile) */}
@@ -49,28 +58,27 @@ export function Header() {
         } overflow-hidden transition-all duration-300 ease-in-out`}
       >
         <nav className="px-4 pt-2 pb-4 space-y-2">
-          <MobileNavLink href="#about" onClick={toggleMenu}>About</MobileNavLink>
-          <MobileNavLink href="#services" onClick={toggleMenu}>Services</MobileNavLink>
-          <MobileNavLink href="#pricing" onClick={toggleMenu}>Pricing</MobileNavLink>
-          <MobileNavLink href="#contact" onClick={toggleMenu}>Contact</MobileNavLink>
+          <MobileNavLink href="#about" onClick={handleScroll}>About</MobileNavLink>
+          <MobileNavLink href="#services" onClick={handleScroll}>Services</MobileNavLink>
+          <MobileNavLink href="#contact" onClick={handleScroll}>Contact</MobileNavLink>
         </nav>
       </div>
     </header>
   )
 }
 
-function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
+function NavLink({ href, onClick, children }: { href: string, onClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => void, children: React.ReactNode }) {
   return (
-    <Link href={href} className="text-gray-600 hover:text-gray-900">
+    <a href={href} className="text-gray-600 hover:text-gray-900" onClick={(e) => onClick(e, href)}>
       {children}
-    </Link>
+    </a>
   )
 }
 
-function MobileNavLink({ href, onClick, children }: { href: string, onClick: () => void, children: React.ReactNode }) {
+function MobileNavLink({ href, onClick, children }: { href: string, onClick: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => void, children: React.ReactNode }) {
   return (
-    <Link href={href} className="block py-2 text-gray-600 hover:text-gray-900" onClick={onClick}>
+    <a href={href} className="block py-2 text-gray-600 hover:text-gray-900" onClick={(e) => onClick(e, href)}>
       {children}
-    </Link>
+    </a>
   )
 }

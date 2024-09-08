@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -16,16 +16,40 @@ const images = [
 
 export default function TransformationSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  const totalSlides = Math.ceil(images.length / 3); // Anzahl der Slides, wobei jedes 3 Bilder enthält
+  const totalSlides = Math.ceil(images.length / 3);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 4000); // Alle 2 Sekunden zum nächsten Slide
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
 
-    return () => clearInterval(interval);
-  }, [currentIndex]);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      const interval = setInterval(() => {
+        handleNext();
+      }, 3000); // Slide alle 4 Sekunden wechseln
+
+      return () => clearInterval(interval);
+    }
+  }, [isVisible, currentIndex]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -43,38 +67,37 @@ export default function TransformationSection() {
     return {
       transform: `translateX(-${currentIndex * 100}%)`,
       transition: "transform 0.5s ease-in-out",
+      width: `${totalSlides * 100}%`,
     };
   };
 
+  const getCurrentImages = () => {
+    const startIndex = currentIndex * 3;
+    return images.slice(startIndex, startIndex + 3);
+  };
+
   return (
-    <section className="container mx-auto px-4 py-16 max-w-4xl">
-      <h2 className="text-4xl md:text-5xl font-bold text-center text-sky-300 mb-8">
+    <section ref={sectionRef} className="container mx-auto px-4 py-16 max-w-4xl">
+      <h2 className={`text-4xl md:text-5xl font-bold text-center text-sky-300 mb-8 ${isVisible ? 'fade-in' : 'opacity-0'}`}>
         Much more than just physical improvement
       </h2>
-      <div className="space-y-6 text-center mb-8">
+      <div className={`space-y-6 text-center mb-8 ${isVisible ? 'fade-in' : 'opacity-0'}`}>
         <p>
-          My MG Girls are not only experiencing a beautiful physical
-          transformation. The real transformation can't be shown – it's
-          happening in the head. A big part of my coaching is changing the
-          mental state state. You will feel better about yourself, and you will
-          believe that you can do it! If you do not feel that way, I will help
-          you get the confidence.
-        </p>
-        <p>
-          With the correct balance between diet, training, motivation and expert
-          guidance you will be able to reach your goals and stay at your goal
-          without the worry of falling back into your old habits. We are working
-          on changing your old habits into new healthy habits.
+          Fetele mele MG nu experimentează doar o frumoasă transformare fizică.
+          Adevărata transformare nu poate fi arătată - ea se întâmplă în cap.
+          O mare parte din coaching-ul meu este schimbarea stării mentale.
+          Te vei simți mai bine în pielea ta și vei crede că o poți face!
+          Dacă nu vă simțiți astfel, vă voi ajuta să ai încredere în tine.
         </p>
       </div>
-      <div className="flex justify-center mb-12">
+      <div className={`flex justify-center mb-12 ${isVisible ? 'fade-in' : 'opacity-0'}`}>
         <Button className="bg-sky-300 hover:bg-sky-400 text-white">
           Join Fit Femme
         </Button>
       </div>
-      <div className="relative overflow-hidden">
+      <div className={`relative overflow-hidden ${isVisible ? 'fade-in' : 'opacity-0'}`}>
         <div className="flex" style={getSlideStyle()}>
-          {images.map((src, index) => (
+          {getCurrentImages().map((src, index) => (
             <TransformationImage
               key={index}
               src={src}

@@ -9,7 +9,7 @@ export default function Component() {
     return (
       <div id="contact" className="flex flex-col items-center p-6 space-y-4 bg-white">
         <div className="flex space-x-4">
-          <a href="https://www.instagram.com/madasiuandreea/" className="block p-2 bg-blue-100 rounded-md">
+          <a href="https://www.instagram.com/andreea/" className="block p-2 bg-blue-100 rounded-md">
             <InstagramIcon className="w-6 h-6 text-blue-600" />
           </a>
         </div>

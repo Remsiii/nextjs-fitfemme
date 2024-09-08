@@ -4,19 +4,24 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Header } from './Footers/Header';
+import emailjs from 'emailjs-com';
 
 export default function LandingPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({
     name: '',
     email: '',
+    weightloss: '',
+    experience: '',
+    goal: '',
+    program: ''
   });
 
   const questions = [
     {
       id: 'weightloss',
       text: 'Cu ce ai nevoie de ajutor?',
-      options: ['Slabit ', 'Continuare '],
+      options: ['Slabit', 'Continuare'],
     },
     {
       id: 'experience',
@@ -26,7 +31,7 @@ export default function LandingPage() {
     {
       id: 'goal',
       text: 'Care este obiectivul tau principal?',
-      options: ['lipsa de timp', 'lipsa ', 'lipsa de motivatie'],
+      options: ['lipsa de timp', 'lipsa', 'lipsa de motivatie'],
     },
     {
       id: 'program',
@@ -36,7 +41,7 @@ export default function LandingPage() {
     {
       id: 'contact',
       text: 'Introdu numele si emailul tau',
-      isForm: true, // Spezifiziere, dass dies ein Formular ist
+      isForm: true,
     },
   ];
 
@@ -48,11 +53,57 @@ export default function LandingPage() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAnswers((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+      const { name, value } = e.target;
+      setAnswers((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+  };
+
+  const sendEmails = () => {
+    const templateParamsAdmin = {
+      name: answers.name,
+      email: answers.email,
+      weightloss: answers.weightloss,
+      experience: answers.experience,
+      goal: answers.goal,
+      program: answers.program,
+    };
+
+    const templateParamsUser = {
+      name: answers.name,
+      to_email: answers.email,  // User's email from the form
+    };
+
+    // Send email to yourself (admin)
+    emailjs.send(
+      'service_6zjv68l', // Your EmailJS service ID
+      'template_7mzprmj', // Your EmailJS admin template ID
+      templateParamsAdmin,
+      'han0KfeMUYdnPIcJ2' // Your EmailJS public key
+    )
+    .then((response) => {
+      console.log('Admin email successfully sent!', response.status, response.text);
+    })
+    .catch((err) => {
+      console.error('Failed to send admin email. Error:', err);
+    });
+
+    // Send email to the user
+    emailjs.send(
+      'service_6zjv68l', // Your EmailJS service ID
+      'template_huoh1pq', // Use a different template ID for user email if you have one
+      templateParamsUser,
+      'han0KfeMUYdnPIcJ2' // Your EmailJS public key
+    )
+    .then((response) => {
+      console.log('User email successfully sent!', response.status, response.text);
+      alert('Mulțumim! Mesajul a fost trimis cu succes.');
+    })
+    .catch((err) => {
+      console.error('Failed to send user email. Error:', err);
+      alert('Ne pare rău! A apărut o problemă la trimiterea mesajului.');
+    });
   };
 
   const handleNext = () => {
@@ -65,8 +116,7 @@ export default function LandingPage() {
       }
       setCurrentQuestion((prev) => prev + 1);
     } else {
-      console.log('Final answers:', answers);
-      // Hier kannst du die gesammelten Daten an ein Backend senden oder anderweitig verarbeiten
+      sendEmails(); // Send both emails on submit
     }
   };
 
@@ -76,12 +126,12 @@ export default function LandingPage() {
 
       <main className="flex-grow flex flex-col md:flex-row">
         <div className="md:w-1/2 bg-blue-300 p-8 flex flex-col justify-center items-center text-center">
-          <h1 className="text-5xl font-bold text-white mb-4">Fit Femme</h1>
-          <p className="text-xl text-white mb-8">Online coaching</p>
-          <div className="w-32 h-1 bg-white mb-8"></div>
-          <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md">
-            <h2 className="text-2xl font-semibold mb-4">{questions[currentQuestion].text}</h2>
-            <div className="space-y-4">
+          <h1 className="text-5xl font-bold text-white mb-4 slide-in">Fit Femme</h1>
+          <p className="text-xl text-white mb-8 fade-in">Online coaching</p>
+          <div className="w-32 h-1 bg-white mb-8 fade-in"></div>
+          <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md fade-in">
+            <h2 className="text-2xl font-semibold mb-4 fade-in">{questions[currentQuestion].text}</h2>
+            <div className="space-y-4 fade-in">
               {questions[currentQuestion].isForm ? (
                 <>
                   <Input
@@ -118,9 +168,8 @@ export default function LandingPage() {
             >
               {currentQuestion < questions.length - 1 ? 'Next →' : 'Submit'}
             </Button>
-
           </div>
-          <p className="text-white mt-4 text-sm">
+          <p className="text-white mt-4 text-sm fade-in">
             Note: If you are from abroad you will be contacted on Email.
           </p>
         </div>
@@ -130,7 +179,7 @@ export default function LandingPage() {
             alt="Fitness model"
             width={600}
             height={800}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full fade-in-scale"
           />
         </div>
       </main>

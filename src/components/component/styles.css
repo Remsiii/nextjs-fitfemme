@@ -33,3 +33,112 @@
 .image {
   border-radius: inherit; /* Stellt sicher, dass das Bild dieselbe Rundung hat wie der Container */
 }
+
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 2s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideIn 1.5s ease-in forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in-scale {
+  transform: scale(0.8); /* Startgröße von 80% */
+  opacity: 0; /* Unsichtbar beim Start */
+  animation: fadeInScale 2s ease-in-out forwards; /* Führe die Animation aus */
+}
+
+@keyframes fadeInScale {
+  0% {
+    transform: scale(0.83); /* Startgröße */
+    opacity: 0; /* Unsichtbar */
+  }
+  100% {
+    transform: scale(1); /* Normale Größe */
+    opacity: 1; /* Sichtbar */
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 1.2s ease-in-out forwards;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+
+.animate-slide-up {
+  animation: slideUp 1.1s ease-out forwards;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+
